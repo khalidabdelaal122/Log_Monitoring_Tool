@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960" role="img" aria-labelledby="title description">
+  <title id="title">LogGuard project architecture</title>
+  <desc id="description">Flow from the command line through configuration and LogGuard services to monitored files, SQLite, alerts, audit records, and terminal reports.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef2ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <style>
+      .heading { font: 700 30px Inter, Segoe UI, Arial, sans-serif; fill: #0f172a; }
+      .subheading { font: 400 15px Inter, Segoe UI, Arial, sans-serif; fill: #64748b; }
+      .box-title { font: 700 17px Inter, Segoe UI, Arial, sans-serif; fill: #0f172a; }
+      .box-text { font: 400 14px Inter, Segoe UI, Arial, sans-serif; fill: #334155; }
+      .small { font: 600 12px Inter, Segoe UI, Arial, sans-serif; fill: #64748b; }
+      .edge { fill: none; stroke: #475569; stroke-width: 2.2; marker-end: url(#arrow); }
+      .edge-dashed { fill: none; stroke: #7c3aed; stroke-width: 2; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="960" rx="24" fill="url(#background)"/>
+  <text x="800" y="54" text-anchor="middle" class="heading">LogGuard Project Architecture</text>
+  <text x="800" y="82" text-anchor="middle" class="subheading">CLI routing, integrity services, persistence, alerts, and reporting</text>
+
+  <g filter="url(#shadow)">
+    <rect x="60" y="130" width="190" height="92" rx="14" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="155" y="165" text-anchor="middle" class="box-title">User / Shell</text>
+    <text x="155" y="192" text-anchor="middle" class="box-text">LogGuard command</text>
+
+    <rect x="330" y="130" width="220" height="92" rx="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="440" y="165" text-anchor="middle" class="box-title">main.py</text>
+    <text x="440" y="192" text-anchor="middle" class="box-text">Argument parser + router</text>
+
+    <rect x="650" y="115" width="250" height="122" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+    <text x="775" y="151" text-anchor="middle" class="box-title">Configuration</text>
+    <text x="775" y="177" text-anchor="middle" class="box-text">config.py + config.yaml</text>
+    <text x="775" y="202" text-anchor="middle" class="box-text">Validate and resolve paths</text>
+
+    <rect x="1010" y="115" width="270" height="122" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="1145" y="151" text-anchor="middle" class="box-title">HMAC Secret</text>
+    <text x="1145" y="177" text-anchor="middle" class="box-text">LOGGUARD_HMAC_KEY</text>
+    <text x="1145" y="202" text-anchor="middle" class="box-text">At least 32 encoded bytes</text>
+
+    <rect x="1380" y="130" width="160" height="92" rx="14" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+    <text x="1460" y="165" text-anchor="middle" class="box-title">Composition</text>
+    <text x="1460" y="192" text-anchor="middle" class="box-text">Build services</text>
+  </g>
+
+  <path class="edge" d="M250 176 H330"/>
+  <path class="edge" d="M550 176 H650"/>
+  <path class="edge" d="M900 176 H1010"/>
+  <path class="edge" d="M1280 176 H1380"/>
+
+  <text x="800" y="305" text-anchor="middle" class="small">COMMAND ROUTING</text>
+  <path class="edge" d="M1460 222 V275 H205 V340"/>
+  <path class="edge" d="M1460 222 V275 H500 V340"/>
+  <path class="edge" d="M1460 222 V275 H795 V340"/>
+  <path class="edge" d="M1460 222 V275 H1090 V340"/>
+  <path class="edge" d="M1460 222 V340"/>
+
+  <g filter="url(#shadow)">
+    <rect x="85" y="340" width="240" height="105" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="205" y="375" text-anchor="middle" class="box-title">add / remove</text>
+    <text x="205" y="402" text-anchor="middle" class="box-text">BaselineManager</text>
+    <text x="205" y="426" text-anchor="middle" class="box-text">Create or remove trust</text>
+
+    <rect x="380" y="340" width="240" height="105" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="500" y="375" text-anchor="middle" class="box-title">verify</text>
+    <text x="500" y="402" text-anchor="middle" class="box-text">Verifier</text>
+    <text x="500" y="426" text-anchor="middle" class="box-text">Classify one file</text>
+
+    <rect x="675" y="340" width="240" height="105" rx="14" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+    <text x="795" y="375" text-anchor="middle" class="box-title">scan</text>
+    <text x="795" y="402" text-anchor="middle" class="box-text">Scanner</text>
+    <text x="795" y="426" text-anchor="middle" class="box-text">Verify every baseline</text>
+
+    <rect x="970" y="340" width="240" height="105" rx="14" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+    <text x="1090" y="375" text-anchor="middle" class="box-title">monitor</text>
+    <text x="1090" y="402" text-anchor="middle" class="box-text">watchdog events</text>
+    <text x="1090" y="426" text-anchor="middle" class="box-text">Debounce then verify</text>
+
+    <rect x="1325" y="340" width="270" height="105" rx="14" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+    <text x="1460" y="375" text-anchor="middle" class="box-title">status / alerts / history</text>
+    <text x="1460" y="402" text-anchor="middle" class="box-text">Read stored records</text>
+    <text x="1460" y="426" text-anchor="middle" class="box-text">Reporter formats output</text>
+  </g>
+
+  <text x="800" y="522" text-anchor="middle" class="small">SHARED INTEGRITY SERVICES</text>
+  <g filter="url(#shadow)">
+    <rect x="150" y="555" width="280" height="112" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="290" y="590" text-anchor="middle" class="box-title">Path + Metadata</text>
+    <text x="290" y="617" text-anchor="middle" class="box-text">Reject symlinks</text>
+    <text x="290" y="641" text-anchor="middle" class="box-text">Size, UID, GID, mode, inode</text>
+
+    <rect x="515" y="555" width="280" height="112" rx="14" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="655" y="590" text-anchor="middle" class="box-title">Streaming SHA-256</text>
+    <text x="655" y="617" text-anchor="middle" class="box-text">Bounded-memory reads</text>
+    <text x="655" y="641" text-anchor="middle" class="box-text">Detect changes during hashing</text>
+
+    <rect x="880" y="555" width="280" height="112" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="1020" y="590" text-anchor="middle" class="box-title">HMAC-SHA256</text>
+    <text x="1020" y="617" text-anchor="middle" class="box-text">Sign baseline fields</text>
+    <text x="1020" y="641" text-anchor="middle" class="box-text">Constant-time validation</text>
+
+    <rect x="1245" y="555" width="280" height="112" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="1385" y="590" text-anchor="middle" class="box-title">AlertManager</text>
+    <text x="1385" y="617" text-anchor="middle" class="box-text">Persist violation</text>
+    <text x="1385" y="641" text-anchor="middle" class="box-text">Log + optional console alert</text>
+  </g>
+
+  <path class="edge" d="M205 445 V500 H290 V555"/>
+  <path class="edge" d="M500 445 V500 H290 V555"/>
+  <path class="edge" d="M795 445 V485 H500 V445"/>
+  <path class="edge" d="M1090 445 V485 H500 V445"/>
+  <path class="edge" d="M430 611 H515"/>
+  <path class="edge" d="M795 611 H880"/>
+  <path class="edge" d="M1160 611 H1245"/>
+
+  <text x="800" y="742" text-anchor="middle" class="small">FILES, PERSISTENCE, AND OUTPUT</text>
+  <g filter="url(#shadow)">
+    <rect x="120" y="780" width="300" height="120" rx="14" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="270" y="818" text-anchor="middle" class="box-title">Monitored Files</text>
+    <text x="270" y="846" text-anchor="middle" class="box-text">Read-only access</text>
+    <text x="270" y="871" text-anchor="middle" class="box-text">Regular files only</text>
+
+    <path d="M650 780 h300 v100 q0 20 -20 20 h-260 q-20 0 -20 -20 z" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+    <ellipse cx="800" cy="780" rx="150" ry="24" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="800" y="818" text-anchor="middle" class="box-title">SQLite integrity.db</text>
+    <text x="800" y="846" text-anchor="middle" class="box-text">monitored_files • alerts</text>
+    <text x="800" y="871" text-anchor="middle" class="box-text">audit_logs</text>
+
+    <rect x="1180" y="780" width="300" height="120" rx="14" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="1330" y="818" text-anchor="middle" class="box-title">Operator Output</text>
+    <text x="1330" y="846" text-anchor="middle" class="box-text">Terminal reports</text>
+    <text x="1330" y="871" text-anchor="middle" class="box-text">logs/logguard.log</text>
+  </g>
+
+  <path class="edge" d="M290 667 V780"/>
+  <path class="edge" d="M655 667 V720 H350 V780"/>
+  <path class="edge" d="M1020 667 V720 H800 V756"/>
+  <path class="edge" d="M1385 667 V720 H880 V780"/>
+  <path class="edge-dashed" d="M1460 445 V730 H1330 V780"/>
+  <path class="edge-dashed" d="M950 840 H1180"/>
+
+  <text x="800" y="936" text-anchor="middle" class="subheading">Editable source: LogGuard_Architecture.drawio • Detailed code guide: PROJECT_WALKTHROUGH.md</text>
+</svg>

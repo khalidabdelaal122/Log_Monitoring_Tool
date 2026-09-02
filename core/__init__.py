@@ -1,0 +1,1 @@
+"""Core integrity functions."""

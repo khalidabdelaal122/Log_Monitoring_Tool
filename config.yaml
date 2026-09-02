@@ -1,0 +1,13 @@
+hash_algorithm: sha256
+monitoring:
+  scan_interval: 60
+  realtime: false
+database:
+  path: database/integrity.db
+logging:
+  path: logs/logguard.log
+alerts:
+  console: true
+monitor_paths: []
+exclude_patterns:
+  - "*.tmp"
